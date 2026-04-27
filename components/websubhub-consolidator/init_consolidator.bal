@@ -20,19 +20,14 @@ import websubhub.consolidator.config;
 import websubhub.consolidator.connections as conn;
 import websubhub.consolidator.persistence as persist;
 
-import ballerina/array;
 import ballerina/http;
-import ballerina/io;
 import ballerina/lang.runtime;
 import ballerina/lang.value;
 import ballerina/log;
-import ballerina/os;
 
 import wso2/messagestore as store;
 
 public function main() returns error? {
-    check writeCaCert();
-
     // Initialize consolidator-service state
     error? stateSyncResult = syncSystemState();
     if stateSyncResult is error {
@@ -102,13 +97,4 @@ isolated function onShutdown() returns error? {
                 state = constructStateSnapshot());
         return persistError;
     }
-}
-
-isolated function writeCaCert() returns error? {
-    string certB64 = os:getEnv("KAFKA_CA_CERT_B64");
-    if certB64 == "" {
-        return;
-    }
-    byte[] certBytes = check array:fromBase64(certB64);
-    check io:fileWriteBytes("/tmp/kafka-ca.pem", certBytes);
 }
