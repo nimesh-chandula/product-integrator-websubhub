@@ -1,0 +1,10 @@
+schemaVersion: "1.2"
+endpoints:
+    - name: consolidator-6d0
+      displayName: consolidator
+      service:
+        basePath: /
+        port: 10001
+      type: REST
+      networkVisibilities:
+        - Project

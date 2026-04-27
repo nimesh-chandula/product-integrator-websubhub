@@ -1,15 +1,11 @@
-schemaVersion: 1.2
+schemaVersion: "1.2"
 
 endpoints:
   - name: consolidator
     displayName: WebSub Hub Consolidator
-    port: 10001
+    service:
+      basePath: /consolidator
+      port: 10001
     type: REST
-    networkVisibility: Project
-    context: /consolidator
-
-configurations:
-  env:
-    - name: KAFKA_CA_CERT_B64
-      type: secret
-      required: true
+    networkVisibilities:
+      - Project
