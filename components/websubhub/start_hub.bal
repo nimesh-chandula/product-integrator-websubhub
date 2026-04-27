@@ -17,12 +17,17 @@
 import websubhub.common;
 import websubhub.config;
 
+import ballerina/array;
 import ballerina/http;
+import ballerina/io;
 import ballerina/lang.runtime;
 import ballerina/log;
+import ballerina/os;
 import ballerina/websubhub;
 
 public function main() returns error? {
+    check writeCaCert();
+
     // Starting the health-check service
     http:Listener httpListener = check new (config:server.port,
         secureSocket = common:extractListenerSecureSocketConfig(config:server.secureSocket)
@@ -38,4 +43,13 @@ public function main() returns error? {
     // Initialize the Hub
     check initializeHubState();
     log:printInfo("Websubhub service started successfully");
+}
+
+isolated function writeCaCert() returns error? {
+    string certB64 = os:getEnv("KAFKA_CA_CERT_B64");
+    if certB64 == "" {
+        return;
+    }
+    byte[] certBytes = check array:fromBase64(certB64);
+    check io:fileWriteBytes("/tmp/kafka-ca.pem", certBytes);
 }

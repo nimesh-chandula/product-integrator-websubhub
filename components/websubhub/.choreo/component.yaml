@@ -1,0 +1,27 @@
+schemaVersion: 1.2
+
+endpoints:
+  - name: websub-hub
+    displayName: WebSub Hub
+    port: 9000
+    type: REST
+    networkVisibility: Public
+    context: /hub
+
+configurations:
+  env:
+    - name: SERVER_ID
+      type: string
+      required: false
+    - name: WEBSUBHUB_CONSOLIDATOR_URL
+      type: string
+      required: true
+    - name: WEBSUBHUB_KEYSTORE_PATH
+      type: string
+      required: false
+    - name: WEBSUBHUB_KEYSTORE_PASSWORD
+      type: secret
+      required: false
+    - name: KAFKA_CA_CERT_B64
+      type: secret
+      required: true
